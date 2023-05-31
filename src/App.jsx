@@ -70,5 +70,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
+body{
+	background: #E5E5E5;
+}
 `
