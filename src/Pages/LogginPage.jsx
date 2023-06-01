@@ -5,6 +5,8 @@ import vector1 from "../assets/vector 1.svg"
 import vector2 from "../assets/vector 2.svg"
 import vector3 from "../assets/vector 3.svg"
 import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
+import  {AuthContext}  from "../Contexts/auth"
 
 export function Logo() {
     return (
@@ -24,13 +26,24 @@ export function Logo() {
 }
 
 export default function LogginPage() {
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+    const {loggin} = useContext(AuthContext)
+    const [inputState,setState] = useState(false)
+    function sendLoggin(e) {
+        setState(true)
+        e.preventDefault();
+        console.log("submited",email,password)
+        loggin(email,password,setState)
+    }
+    
     return (
         <LogginContainer>
             <Logo />
-            <LogginFormContainer>
-                <Input className="input" placeholder="  email" type="text"></Input>
-                <Input className="input" placeholder="  senha" type="password"></Input>
-                <Button>Entrar</Button>
+            <LogginFormContainer onSubmit={sendLoggin}>
+                <Input className="input" disabled={inputState} placeholder="  email" onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
+                <Input className="input" disabled={inputState} placeholder="  senha" onChange={(e)=> setPassword(e.target.value)} type="password" required></Input>
+                <Button disabled={inputState}>Entrar</Button>
                 <Link to={"/cadastro"}>
                     <P>Não tem uma conta? Cadastre-se!</P>
                 </Link>

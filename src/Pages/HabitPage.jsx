@@ -114,6 +114,7 @@ const NavContainer = styled.div`
     background: #126BA5;
     width:100vw;
     height: 70px;
+    box-shadow:0 5px 5px rgb(0,0,0,0.2);
     .container{
         display:flex;
         justify-content:space-between;

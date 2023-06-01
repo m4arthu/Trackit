@@ -1,23 +1,12 @@
-import { useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { AppRoutes } from './Routes/AppRoutes'
 import { createGlobalStyle } from 'styled-components'
-import LogginPage from "./Pages/LogginPage.jsx"
-import RegisterPage from './Pages/Register.jsx'
-import  HabitsPage  from './Pages/HabitPage.jsx'
-import HistoryPage from './Pages/HistoryPage.jsx'
+
 function App() {
 
   return (
     <>
       <ResetCss />
-      <BrowserRouter>
-        <Routes>
-          <Route Component={LogginPage} path='/'></Route>
-		  <Route Component={RegisterPage} path='/cadastro'></Route>
-		  <Route Component={HabitsPage} path='/habitos'></Route>
-		  <Route Component={HistoryPage} path='/historico'></Route>
-		</Routes>
-      </BrowserRouter>
+	  <AppRoutes/>
 
     </>
   )

@@ -1,18 +1,33 @@
 import styled from "styled-components"
 import { Logo, LogginFormContainer, Input, Button, P } from "./LogginPage.jsx"
 import { Link } from "react-router-dom"
-
+import { useContext, useState } from "react"
+import {AuthContext}  from "../Contexts/auth"
 
 export default function RegisterPage() {
+    const [email, setEmail]  = useState("")
+    const [password, setpassword] = useState("")
+    const [name, setname] = useState("")
+    const [foto, setfoto] = useState("")
+    const {register} = useContext(AuthContext)
+    const [inputState,setState] = useState(false)
+   
+    const EnviarDados = (e) =>{
+    e.preventDefault()
+    console.log("dadosenviados")
+    setState(true)
+    register(email,password,name,foto,setState)
+   }
+   
     return (
         <RegisterContainer>
             <Logo />
-            <LogginFormContainer>
-                <Input className="input" placeholder="  email" type="text"></Input>
-                <Input className="input" placeholder="  senha" type="password"></Input>
-                <Input className="input" placeholder="  nome" type="text"></Input>
-                <Input className="input" placeholder="  foto" type="text"></Input>
-                <Button>Cadastrar</Button>
+            <LogginFormContainer onSubmit={EnviarDados}>
+                <Input className="input" placeholder="  email" disabled={inputState} onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
+                <Input className="input" placeholder="  senha" disabled={inputState} onChange={(e)=> setpassword(e.target.value)} type="password" required></Input>
+                <Input className="input" placeholder="  nome" disabled={inputState} onChange={(e)=> setname(e.target.value)} type="text" required></Input>
+                <Input className="input" placeholder="  foto" disabled={inputState}  onChange={(e)=> setfoto(e.target.value)} type="text" required></Input>
+                <Button disabled={inputState}>Cadastrar</Button>
                 <Link to={"/"}>
                     <P>Já tem uma conta? Faça login!</P>
                 </Link>
