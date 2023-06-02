@@ -16,7 +16,6 @@ import { useContext } from "react"
 export const AppRoutes = () => {
     const Private = ({children}) =>{
         const {authenticated,user} = useContext(AuthContext)
-        console.log(authenticated,user)
 
         if(authenticated) {
             return children

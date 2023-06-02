@@ -18,15 +18,16 @@ export const AuthProvider = ({children}) =>{
        promisse.then((UserData)=>{
         setUserState("true")
         setUser(UserData)
-        console.log("usuario Logado") 
         navigate("/habitos")
        })
        promisse.catch((error)=>{
         setInputState(false)
           if(error.response.status === 422){
             alert("email invalido")
+          } else if(error.response.status === 401) {
+            alert("Senha  incorreta") 
           } else {
-            alert("Usuario não cadastrado!")
+            alert("Não cadastrado")
             navigate("/cadastro")
           }
        })
@@ -53,7 +54,7 @@ export const AuthProvider = ({children}) =>{
         })
     }
     return(
-        <AuthContext.Provider value={{authenticated:userState, user,  loggin, register}}>
+        <AuthContext.Provider value={{authenticated:userState, user, setUserState,  loggin, register}}>
             {children}
         </AuthContext.Provider>
       

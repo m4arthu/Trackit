@@ -5,7 +5,7 @@ export default function HistoryPage() {
         <>
             <Navbar />
             <Body>
-                esse é o  histórico
+                <p>Em breve você poderá ver o histórico dos seus hábitos aqui!</p>
             </Body>
             <Footer/>
         </>

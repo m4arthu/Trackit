@@ -33,7 +33,6 @@ export default function LogginPage() {
     function sendLoggin(e) {
         setState(true)
         e.preventDefault();
-        console.log("submited",email,password)
         loggin(email,password,setState)
     }
     

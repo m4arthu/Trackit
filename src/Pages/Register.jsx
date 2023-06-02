@@ -14,7 +14,6 @@ export default function RegisterPage() {
    
     const EnviarDados = (e) =>{
     e.preventDefault()
-    console.log("dadosenviados")
     setState(true)
     register(email,password,name,foto,setState)
    }
