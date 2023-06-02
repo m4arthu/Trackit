@@ -16,7 +16,7 @@ export const HojePage = () => {
    
    
    const progress = (token) => {
-    const habitConcluidos = 0
+    var habitConcluidos = 0
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
     const promisse = axios.get(url, {
       headers: {
