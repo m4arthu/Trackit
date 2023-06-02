@@ -10,18 +10,19 @@ import RegisterPage from '../Pages/Register.jsx'
 import HabitsPage from '../Pages/HabitPage.jsx'
 import HistoryPage from '../Pages/HistoryPage.jsx'
 
-import {AuthContext, AuthProvider}  from "../Contexts/auth"
+import { AuthContext, AuthProvider } from "../Contexts/auth"
 import { useContext } from "react"
+import { HojePage } from "../Pages/HojePage.jsx"
 
 export const AppRoutes = () => {
-    const Private = ({children}) =>{
-        const {authenticated,user} = useContext(AuthContext)
+    const Private = ({ children }) => {
+        const { authenticated, user } = useContext(AuthContext)
 
-        if(authenticated) {
+        if (authenticated) {
             return children
         } else {
 
-            return <LogginPage/>
+            return <LogginPage />
         }
     }
     return (
@@ -29,23 +30,29 @@ export const AppRoutes = () => {
             <AuthProvider>
                 <Routes>
                     <Route element={
-                      <Private>
-                        <LogginPage/>
-                      </Private>
+                        <Private>
+                            <LogginPage />
+                        </Private>
                     } path='/'></Route>
                     <Route element={
-                       <RegisterPage/> 
+                        <RegisterPage />
                     } path='/cadastro'></Route>
                     <Route element={
                         <Private>
-                            <HabitsPage/>
+                            <HabitsPage />
                         </Private>
                     } path='/habitos'></Route>
                     <Route element={
-                      <Private>
-                      <HistoryPage/>
-                    </Private>
+                        <Private>
+                            <HistoryPage />
+                        </Private>
                     } path='/historico'></Route>
+                    <Route path="/hoje" element={
+                        <Private>
+                            <HojePage />
+                        </Private>
+                    }></Route>
+
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

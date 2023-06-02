@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../Contexts/auth"
 import axios from "axios"
 import { Link } from "react-router-dom"
-import ReactDOM from 'react-dom/client'
+import trash from "../assets/trash.svg"
 export function Navbar() {
     const { user } = useContext(AuthContext)
     return (
@@ -46,20 +46,18 @@ function PostHabits({ setDisplayState }) {
         <PostHabitsContainer>
             <h2>Meus hábitos</h2>
             <button onClick={() => setDisplayState("flex")}>+</button>
-
         </PostHabitsContainer>
     )
 }
 
 
 export default function HabitsPage() {
-    const { user, footerPercentage } = useContext(AuthContext)
+    const { user, footerPercentage,setFooterPercentage } = useContext(AuthContext)
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const [habits, setHabits] = useState([])
     const [displayState, setDisplayState] = useState("none")
     const [inputDisable, setInputDisable] = useState(false)
     const [habit, setHabit] = useState("")
-    const percentage = 100
     const weekdays = [{ id: "1", value: "D" }, { id: "2", value: "S" }, { id: "3", value: "T" }, { id: "4", value: "Q" }, { id: "5", value: "Q" }, { id: "6", value: "S" }, { id: "7", value: "S" }]
     var selectedDays = []
     useEffect(() => {
@@ -71,8 +69,30 @@ export default function HabitsPage() {
         promisse.then((response) => {
             setHabits(response.data)
         })
+        progress(user.data.token)
     }, [])
 
+
+    const progress = (token) => {
+        const habitConcluidos = 0
+        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        const promisse = axios.get(url, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        promisse.then((response) => {
+            response.data.forEach((habit) => {
+              if (habit.done) {
+                habitConcluidos+= 1
+              }
+            })
+            console.log(habitConcluidos)
+        })
+      }
+
+
+   
     const Button = ({ value, disabled, id }) => {
         const [selected, setSelected] = useState(false)
         return <ButtonWeek disabled={disabled} type="button" selected={selected} onClick={() => {
@@ -83,7 +103,6 @@ export default function HabitsPage() {
                 setSelected(true)
                 selectedDays.push(id)
             }
-            console.log(selectedDays)
         }} value={value} />
 
     }
@@ -101,7 +120,7 @@ export default function HabitsPage() {
             }
         })
         promisse.then((response) => {
-            console.log(response)
+            (response)
             setInputDisable(false)
             setHabit("")
             setDisplayState("none")
@@ -118,8 +137,30 @@ export default function HabitsPage() {
         promisse.catch((error) => {
             setInputDisable(false)
             alert("habito ja criado!!")
-            console.log(error)
+            (error)
         })
+    }
+
+    const deleteHabit = (id) =>{
+        (id)
+        if(confirm("deseja apagar o  abito?")){
+            const promisse = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,{
+                headers: {
+                    'Authorization': `Bearer ${user.data.token}`
+                }
+            })
+
+            promisse.then(()=>{
+             const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
+                 headers: {
+                     'Authorization': `Bearer ${user.data.token}`
+                 }
+             })
+             promisse.then((response) => {
+                 setHabits(response.data)
+             })
+            })
+        } 
     }
     return (habits.length === 0 ?
 
@@ -142,7 +183,7 @@ export default function HabitsPage() {
                 <p>Você não tem nenhum hábito cadastrado ainda.
                     Adicione um hábito para começar a trackear!</p>
             </Body>
-            <Footer percentage={percentage} />
+            <Footer percentage={footerPercentage} />
         </>
 
         :
@@ -164,10 +205,10 @@ export default function HabitsPage() {
                     </div>
                 </HabitsForm>
                 {habits.map((habit) => {
-                    console.log(habit)
+                    (habit)
                     return <HabitContainer key={habit.id}>
                         <div>
-                            <h2>{habit.name}</h2>
+                            <h2 className="header">{habit.name}<span><img onClick={()=>deleteHabit(habit.id)}src={trash} alt="" /></span></h2>
                             <div className="container">
                                 {weekdays.map((day) => {
                                     if (habit.days.indexOf(weekdays.indexOf(day) + 1) === -1) {
@@ -181,7 +222,7 @@ export default function HabitsPage() {
                     </HabitContainer>
                 })}
             </Body>
-            <Footer percentage={percentage} />
+            <Footer percentage={footerPercentage} />
         </>
     )
 }
@@ -292,7 +333,7 @@ export const Body = styled.div`
    display:flex;
    flex-direction:column;
    align-items:center;
-   margin-bottom:120px;
+   margin-bottom:150px;
    p{
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -308,7 +349,6 @@ export const Body = styled.div`
 `
 export const PostHabitsContainer = styled.div`
     display:flex;
-    justify-content:space-between;
     width:100%;
     margin-top:20px;
     h2{
@@ -318,7 +358,9 @@ export const PostHabitsContainer = styled.div`
         font-weight: 400;
         font-size: 22.976px;
         color: #126BA5;
-
+        word-break:break-all;
+        display:flex;
+        margin-right:15px;
     }
     button{
         display:flex;
@@ -428,9 +470,27 @@ const HabitContainer = styled.div`
 width:100%;
 display:flex;
 justify-content:center;
+margin-top:40px;
+align-items:center;
+.header{
+    display:flex;
+    width:100%;
+    margin-top:10px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+     margin-left: 10px;
+    margin-bottom:10px;
+    justify-content:space-between;
+    span{
+        margin-right:20px;
+    }
+}
 div{
+    margin-top:10px;
     width:290px;
-    height:91px;
+    height:50px;
     background: #FFFFFF;
     border-radius: 5px;
 }
