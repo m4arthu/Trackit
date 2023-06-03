@@ -40,11 +40,11 @@ export default function LogginPage() {
         <LogginContainer>
             <Logo />
             <LogginFormContainer onSubmit={sendLoggin}>
-                <Input className="input" disabled={inputState} placeholder="  email" onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
-                <Input className="input" disabled={inputState} placeholder="  senha" onChange={(e)=> setPassword(e.target.value)} type="password" required></Input>
-                <Button disabled={inputState}>Entrar</Button>
+                <Input data-test="email-input" className="input" disabled={inputState} placeholder="  email" onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
+                <Input data-test="password-input" className="input" disabled={inputState} placeholder="  senha" onChange={(e)=> setPassword(e.target.value)} type="password" required></Input>
+                <Button data-test="login-btn" disabled={inputState}>Entrar</Button>
                 <Link to={"/cadastro"}>
-                    <P>Não tem uma conta? Cadastre-se!</P>
+                    <P data-test="sginup-link">Não tem uma conta? Cadastre-se!</P>
                 </Link>
             </LogginFormContainer>
         </LogginContainer>

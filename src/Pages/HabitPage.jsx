@@ -8,10 +8,10 @@ import trash from "../assets/trash.svg"
 export function Navbar() {
     const { user } = useContext(AuthContext)
     return (
-        <NavContainer>
+        <NavContainer data-test="header">
             <div className="container">
                 <Logo>TrackIt</Logo>
-                <img src={user.data.image} alt="" />
+                <img data-test="avatar" src={user.data.image} alt="" />
             </div>
         </NavContainer>
     )
@@ -19,9 +19,9 @@ export function Navbar() {
 
 export function Footer({ percentage }) {
     return (
-        <FooterContainer>
+        <FooterContainer data-test="menu">
             <div>
-                <Link to={"/habitos"}>
+                <Link  data-test="habit-link" to={"/habitos"}>
                     <p>Habitos</p>
                 </Link>
                 <div className="progressBarcontainer">
@@ -29,11 +29,11 @@ export function Footer({ percentage }) {
                         value={percentage}
                         styles={progressbarStyle}
                     />
-                    <Link to={"/Hoje"}>
+                    <Link data-test="today-link" to={"/Hoje"}>
                         <p >Hoje</p>
                     </Link>
                 </div>
-                <Link to={"/historico"}>
+                <Link data-test="history-link" to={"/historico"}>
                     <p>Histórico</p>
                 </Link>
             </div>
@@ -43,9 +43,9 @@ export function Footer({ percentage }) {
 
 function PostHabits({ setDisplayState }) {
     return (
-        <PostHabitsContainer>
+        <PostHabitsContainer data-test="habit-create-container">
             <h2>Meus hábitos</h2>
-            <button onClick={() => setDisplayState("flex")}>+</button>
+            <button data-test="habit-create-btn" onClick={() => setDisplayState("flex")}>+</button>
         </PostHabitsContainer>
     )
 }
@@ -94,7 +94,7 @@ export default function HabitsPage() {
    
     const Button = ({ value, disabled, id }) => {
         const [selected, setSelected] = useState(false)
-        return <ButtonWeek disabled={disabled} type="button" selected={selected} onClick={() => {
+        return <ButtonWeek data-test="habit-day" disabled={disabled} type="button" selected={selected} onClick={() => {
             if (selected) {
                 setSelected(false)
                 selectedDays.splice(selectedDays.indexOf(Number(id)), 1)
@@ -168,15 +168,15 @@ export default function HabitsPage() {
             <Body>
                 <PostHabits setDisplayState={setDisplayState} />
                 <HabitsForm style={{ display: displayState }} onSubmit={sendHabit}>
-                    <input disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
+                    <input data-test="habit-name-input" disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
                     <div className="dayweek">
                         {weekdays.map((day) => {
                             return <Button disabled={inputDisable} key={day.id} id={day.id} value={day.value} />
                         })}
                     </div>
                     <div className="actions">
-                        <input disabled={inputDisable} className="cancelar" onClick={() => setDisplayState("none")} type="button" value={"cancelar"} />
-                        <input disabled={inputDisable} className="enviar" type="submit" value={"salvar"} />
+                        <input disabled={inputDisable} data-test="habit-create-cancel-btn" className="cancelar" onClick={() => setDisplayState("none")} type="button" value={"cancelar"} />
+                        <input disabled={inputDisable} data-test="habit-create-save-btn"  className="enviar" type="submit" value={"salvar"} />
                     </div>
                 </HabitsForm>
                 <p>Você não tem nenhum hábito cadastrado ainda.
@@ -192,27 +192,27 @@ export default function HabitsPage() {
             <Body>
                 <PostHabits setDisplayState={setDisplayState} />
                 <HabitsForm style={{ display: displayState }} onSubmit={sendHabit}>
-                    <input disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
+                    <input data-test="habit-name-input" disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
                     <div className="dayweek">
                         {weekdays.map((day) => {
                             return <Button disabled={inputDisable} key={day.id} id={day.id} value={day.value} />
                         })}
                     </div>
                     <div className="actions">
-                        <input disabled={inputDisable} className="cancelar" onClick={() => setDisplayState("none")} type="button" value={"cancelar"} />
-                        <input disabled={inputDisable} className="enviar" type="submit" value={"salvar"} />
+                        <input disabled={inputDisable} data-test="habit-create-cancel-btn"  className="cancelar" onClick={() => setDisplayState("none")} type="button" value={"cancelar"} />
+                        <input disabled={inputDisable} data-test="habit-create-save-btn" className="enviar" type="submit" value={"salvar"} />
                     </div>
                 </HabitsForm>
                 {habits.map((habit) => {
-                    return <HabitContainer key={habit.id}>
+                    return <HabitContainer data-test="habit-container" key={habit.id}>
                         <div>
-                            <h2 className="header">{habit.name}<span><img onClick={()=>deleteHabit(habit.id)}src={trash} alt="" /></span></h2>
+                            <h2 className="header"data-test="habit-name">{habit.name}<span data-test="habit-delete-btn" ><img onClick={()=>deleteHabit(habit.id)}src={trash} alt="" /></span></h2>
                             <div className="container">
                                 {weekdays.map((day) => {
                                     if (habit.days.indexOf(weekdays.indexOf(day)) === -1) {
-                                        return <ButtonWeek key={day.id} type="button" selected={false} value={day.value} />
+                                        return <ButtonWeek data-test="habit-day" key={day.id} type="button" selected={false} value={day.value} />
                                     } else {
-                                        return <ButtonWeek key={day.id} type="button" selected={true} value={day.value} />
+                                        return <ButtonWeek data-test="habit-day" key={day.id} type="button" selected={true} value={day.value} />
                                     }
                                 })}
                             </div>

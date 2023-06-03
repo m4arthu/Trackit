@@ -22,13 +22,13 @@ export default function RegisterPage() {
         <RegisterContainer>
             <Logo />
             <LogginFormContainer onSubmit={EnviarDados}>
-                <Input className="input" placeholder="  email" disabled={inputState} onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
-                <Input className="input" placeholder="  senha" disabled={inputState} onChange={(e)=> setpassword(e.target.value)} type="password" required></Input>
-                <Input className="input" placeholder="  nome" disabled={inputState} onChange={(e)=> setname(e.target.value)} type="text" required></Input>
-                <Input className="input" placeholder="  foto" disabled={inputState}  onChange={(e)=> setfoto(e.target.value)} type="text" required></Input>
-                <Button disabled={inputState}>Cadastrar</Button>
+                <Input data-test="email-input" className="input" placeholder="  email" disabled={inputState} onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
+                <Input data-test="password-input" className="input" placeholder="  senha" disabled={inputState} onChange={(e)=> setpassword(e.target.value)} type="password" required></Input>
+                <Input data-test="user-name-input" className="input" placeholder="  nome" disabled={inputState} onChange={(e)=> setname(e.target.value)} type="text" required></Input>
+                <Input data-test="user-image-input" className="input" placeholder="  foto" disabled={inputState}  onChange={(e)=> setfoto(e.target.value)} type="text" required></Input>
+                <Button data-test="siginup-btn" disabled={inputState}>Cadastrar</Button>
                 <Link to={"/"}>
-                    <P>Já tem uma conta? Faça login!</P>
+                    <P data-test="login-link">Já tem uma conta? Faça login!</P>
                 </Link>
             </LogginFormContainer>
         </RegisterContainer>

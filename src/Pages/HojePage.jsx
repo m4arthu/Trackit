@@ -3,7 +3,7 @@ import { Body, Footer, Navbar } from "./HabitPage"
 import { AuthContext } from "../Contexts/auth"
 import styled from "styled-components"
 import axios from "axios"
-import moment, { now } from "moment/moment"
+import moment from "moment/moment"
 const weekdays = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado"]
 import Confirm from "../assets/confirm.svg"
 export const HojePage = () => {
@@ -71,9 +71,9 @@ const Habit = ({habit}) =>{
    }
 
    return <HabitContainer confirmed={confirmed} key={habits.indexOf(habit)}>
-            <div>
+            <div data-test="today-habit-name">
               {habit.name}
-              <button onClick={()=>{toMarkHabit()}} className="confirm-box"><img src={Confirm} alt="" /></button>
+              <button data-test="today-habit-check-btn"  onClick={()=>{toMarkHabit()}} className="confirm-box"><img src={Confirm} alt="" /></button>
             </div>
           </HabitContainer>
 }
@@ -99,12 +99,12 @@ const Habit = ({habit}) =>{
     <>
       <Navbar />
       <Header>
-        <h2>{weekdays[data.day()] + ","} {new Date().getDate() + "/" + data.month()} </h2>
-        {habits.length === 0 ? <P>Nenhum hábito criado ou concluído ainda</P> :
-          <P color={"#8FC549"}><span>{footerPercentage +"%"}</span> dos hábitos concluídos</P>}
+        <h2 data-test="today">{weekdays[data.day()] + ","} {new Date().getDate() + "/" + data.month()} </h2>
+        {habits.length === 0 ? <P data-test="today-counter">Nenhum hábito criado ou concluído ainda</P> :
+          <P data-test="today-counter" color={"#8FC549"}><span>{footerPercentage +"%"}</span> dos hábitos concluídos</P>}
       </Header>
       {habits.map((habit) => {
-        return <HojeContainer>
+        return <HojeContainer data-test="today-habit-container">
            <Habit habit={habit}/>
         </HojeContainer>
 
