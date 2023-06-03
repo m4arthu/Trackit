@@ -58,7 +58,7 @@ export default function HabitsPage() {
     const [displayState, setDisplayState] = useState("none")
     const [inputDisable, setInputDisable] = useState(false)
     const [habit, setHabit] = useState("")
-    const weekdays = [{ id: "1", value: "D" }, { id: "2", value: "S" }, { id: "3", value: "T" }, { id: "4", value: "Q" }, { id: "5", value: "Q" }, { id: "6", value: "S" }, { id: "7", value: "S" }]
+    const weekdays = [{ id: "0", value: "D" }, { id: "1", value: "S" }, { id: "2", value: "T" }, { id: "3", value: "Q" }, { id: "4", value: "Q" }, { id: "5", value: "S" }, { id: "6", value: "S" },{ id: "7", value: "D" }]
     var selectedDays = []
     useEffect(() => {
         const promisse = axios.get(url, {
@@ -74,21 +74,20 @@ export default function HabitsPage() {
 
 
     const progress = (token) => {
-        var habitConcluidos = 0
-        const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
-        const promisse = axios.get(url, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-        promisse.then((response) => {
-            response.data.forEach((habit) => {
-              if (habit.done) {
-                habitConcluidos+= 1
+        axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }).then((response)=>{
+            const total = response.data.length
+            let habitosFeitos = 0 
+            response.data.forEach((h)=>{
+              if(h.done){
+                habitosFeitos++
               }
             })
-            console.log(habitConcluidos)
-        })
+            setFooterPercentage((habitosFeitos/total).toFixed(2)*100)
+          })
       }
 
 
@@ -98,10 +97,10 @@ export default function HabitsPage() {
         return <ButtonWeek disabled={disabled} type="button" selected={selected} onClick={() => {
             if (selected) {
                 setSelected(false)
-                selectedDays.splice(selectedDays.indexOf(id), 1)
+                selectedDays.splice(selectedDays.indexOf(Number(id)), 1)
             } else {
                 setSelected(true)
-                selectedDays.push(id)
+                selectedDays.push(Number(id))
             }
         }} value={value} />
 
@@ -110,6 +109,7 @@ export default function HabitsPage() {
     const sendHabit = (e) => {
         setInputDisable(true)
         e.preventDefault()
+       
         const data = {
             name: habit,
             days: selectedDays
@@ -142,7 +142,6 @@ export default function HabitsPage() {
     }
 
     const deleteHabit = (id) =>{
-        (id)
         if(confirm("deseja apagar o  abito?")){
             const promisse = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,{
                 headers: {
@@ -205,13 +204,12 @@ export default function HabitsPage() {
                     </div>
                 </HabitsForm>
                 {habits.map((habit) => {
-                    (habit)
                     return <HabitContainer key={habit.id}>
                         <div>
                             <h2 className="header">{habit.name}<span><img onClick={()=>deleteHabit(habit.id)}src={trash} alt="" /></span></h2>
                             <div className="container">
                                 {weekdays.map((day) => {
-                                    if (habit.days.indexOf(weekdays.indexOf(day) + 1) === -1) {
+                                    if (habit.days.indexOf(weekdays.indexOf(day)) === -1) {
                                         return <ButtonWeek key={day.id} type="button" selected={false} value={day.value} />
                                     } else {
                                         return <ButtonWeek key={day.id} type="button" selected={true} value={day.value} />
@@ -351,6 +349,7 @@ export const PostHabitsContainer = styled.div`
     display:flex;
     width:100%;
     margin-top:20px;
+    justify-content:space-between;
     h2{
         margin-left:10px;
         font-family: 'Lexend Deca';

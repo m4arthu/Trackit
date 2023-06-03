@@ -9,7 +9,7 @@ export default function HistoryPage() {
         <>
             <Navbar />
             <Header>
-                <h2>histórico</h2>
+                <h2>Histórico</h2>
             </Header>
             <Body>
                 <p>Em breve você poderá ver o histórico dos seus hábitos aqui!</p>
