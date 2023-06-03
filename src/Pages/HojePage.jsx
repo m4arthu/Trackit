@@ -14,72 +14,76 @@ export const HojePage = () => {
     progress(user.data.token)
   }, [])
 
-const Habit = ({habit}) =>{
-  console.log(habit)
-   const [confirmed,setConfirmed] = useState(habit.done ? true:false)
-   const toMarkHabit = () =>{
-    if(habit.done){
-      setConfirmed(false)
-      const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`,{}, {
-        headers: {
-          'Authorization': `Bearer ${user.data.token}`
-        }
-      })
-      promisse.then(()=>{
-        axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+  const Habit = ({ habit }) => {
+    console.log(habit)
+    const [confirmed, setConfirmed] = useState(habit.done ? true : false)
+    const toMarkHabit = () => {
+      if (habit.done) {
+        setConfirmed(false)
+        const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, {
           headers: {
             'Authorization': `Bearer ${user.data.token}`
           }
-        }).then((response)=>{
-          const total = response.data.length
-          let habitosFeitos = 0 
-          response.data.forEach((h)=>{
-            if(h.done){
-              habitosFeitos++
-            }
-          })
-          setHabits(response.data)
-          setFooterPercentage((habitosFeitos/total).toFixed(2))
         })
-      })
-    } else {
-      setConfirmed(true)
-      const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`,{}, {
-        headers: {
-          'Authorization': `Bearer ${user.data.token}`
-        }
-      })
-      promisse.then(()=>{
-        axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+        promisse.then(() => {
+          axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+            headers: {
+              'Authorization': `Bearer ${user.data.token}`
+            }
+          }).then((response) => {
+            const total = response.data.length
+            let habitosFeitos = 0
+            response.data.forEach((h) => {
+              if (h.done) {
+                habitosFeitos++
+              }
+            })
+            setHabits(response.data)
+            setFooterPercentage((habitosFeitos / total).toFixed(2))
+          })
+        })
+      } else {
+        setConfirmed(true)
+        const promisse = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, {
           headers: {
             'Authorization': `Bearer ${user.data.token}`
           }
-        }).then((response)=>{
-          const total = response.data.length
-          let habitosFeitos = 0 
-          response.data.forEach((h)=>{
-            if(h.done){
-              habitosFeitos++
-            }
-          })
-          setHabits(response.data)
-          setFooterPercentage((habitosFeitos/total).toFixed(2)*100)
         })
-       
-      })
-    }
-   }
+        promisse.then(() => {
+          axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
+            headers: {
+              'Authorization': `Bearer ${user.data.token}`
+            }
+          }).then((response) => {
+            const total = response.data.length
+            let habitosFeitos = 0
+            response.data.forEach((h) => {
+              if (h.done) {
+                habitosFeitos++
+              }
+            })
+            setHabits(response.data)
+            setFooterPercentage((habitosFeitos / total).toFixed(2) * 100)
+          })
 
-   return <HabitContainer confirmed={confirmed} key={habits.indexOf(habit)}>
-            <div data-test="today-habit-name">
-              {habit.name}
-              <button data-test="today-habit-check-btn"  onClick={()=>{toMarkHabit()}} className="confirm-box"><img src={Confirm} alt="" /></button>
-            </div>
-          </HabitContainer>
-}
+        })
+      }
+    }
+
+    return <HabitContainer confirmed={confirmed} key={habits.indexOf(habit)}>
+      <div data-test="today-habit-name">
+        {habit.name}
+        <button data-test="today-habit-check-btn" onClick={() => { toMarkHabit() }} className="confirm-box"><img src={Confirm} alt="" /></button>
+        <section>
+          <p data-test="today-habit-sequence">Sequência atual <span>{habit.currentSequence} dias</span></p>
+          <p data-test="today-habit-record">Seu recorde <span>{habit.highestSequence} dias</span></p>
+        </section>
+      </div>
+
+    </HabitContainer>
+  }
 
   const progress = (token) => {
-    var habitConcluidos = 0
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
     const promisse = axios.get(url, {
       headers: {
@@ -88,11 +92,6 @@ const Habit = ({habit}) =>{
     })
     promisse.then((response) => {
       setHabits(response.data)
-      response.data.forEach((habit) => {
-        if (habit.done) {
-          habitConcluidos += 1
-        }
-      })
     })
   }
   return (
@@ -100,12 +99,12 @@ const Habit = ({habit}) =>{
       <Navbar />
       <Header>
         <h2 data-test="today">{weekdays[data.day()] + ","} {new Date().getDate() + "/" + data.month()} </h2>
-        {habits.length === 0 ? <P data-test="today-counter">Nenhum hábito criado ou concluído ainda</P> :
-          <P data-test="today-counter" color={"#8FC549"}><span>{footerPercentage +"%"}</span> dos hábitos concluídos</P>}
+        {footerPercentage === 0.00 ? <P data-test="today-counter">Nenhum hábito concluído ainda</P> :
+          <P data-test="today-counter" color={"#8FC549"}><span>{footerPercentage + "%"}</span> dos hábitos concluídos</P>}
       </Header>
       {habits.map((habit) => {
         return <HojeContainer data-test="today-habit-container">
-           <Habit habit={habit}/>
+          <Habit habit={habit} />
         </HojeContainer>
 
       })}
@@ -127,13 +126,26 @@ margin-top:20px;
 font-family: 'Lexend Deca';
 font-style: normal;
 font-weight: 400;
+
+
 div{
+  position:relative;
   font-size: 20px;
   color: #666666;
   margin: 15px 0 0 15px;
   display:flex;
   justify-content:space-between;
   margin-right:13px;
+  section{
+    position:absolute;
+    bottom:5px;
+    font-size:13px;
+    p{
+      span{
+      color:${(props)=>props.confirmed ? "#8FC549" : "#666666"};
+      }
+    }
+}
 }
   button{
   height: 69px;
@@ -141,7 +153,7 @@ div{
    left: 276px;
    top: 190px;
    border-radius: 5px;
-   background: ${(props)=>props.confirmed ? "#8FC549":"#EBEBEB"};
+   background: ${(props) => props.confirmed ? "#8FC549" : "#EBEBEB"};
    border:none;
    
 }
@@ -157,7 +169,7 @@ margin: 20px 0  0 20px;
 
 `
 const P = styled.p`
- color: ${(props)=> props.color? props.color: "#BABABA"};
+ color: ${(props) => props.color ? props.color : "#BABABA"};
   font-size:18px;
   margin-top:10px;
 `

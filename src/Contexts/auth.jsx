@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     promisse.then((UserData) => {
       setUserState("true")
       setUser(UserData)
-      navigate("/habitos")
+      navigate("/hoje")
     })
     promisse.catch((error) => {
       setInputState(false)

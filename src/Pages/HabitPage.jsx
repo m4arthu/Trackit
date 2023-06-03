@@ -21,20 +21,20 @@ export function Footer({ percentage }) {
     return (
         <FooterContainer data-test="menu">
             <div>
-                <Link  data-test="habit-link" to={"/habitos"}>
-                    <p>Habitos</p>
+                <Link to={"/habitos"}>
+                    <p data-test="habit-link">Habitos</p>
                 </Link>
                 <div className="progressBarcontainer">
                     <CircularProgressbar
                         value={percentage}
                         styles={progressbarStyle}
                     />
-                    <Link data-test="today-link" to={"/Hoje"}>
-                        <p >Hoje</p>
+                    <Link  to={"/Hoje"}>
+                        <p data-test="today-link" >Hoje</p>
                     </Link>
                 </div>
-                <Link data-test="history-link" to={"/historico"}>
-                    <p>Histórico</p>
+                <Link  to={"/historico"}>
+                    <p data-test="history-link">Histórico</p>
                 </Link>
             </div>
         </FooterContainer>

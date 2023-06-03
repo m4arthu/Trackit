@@ -26,7 +26,7 @@ export default function RegisterPage() {
                 <Input data-test="password-input" className="input" placeholder="  senha" disabled={inputState} onChange={(e)=> setpassword(e.target.value)} type="password" required></Input>
                 <Input data-test="user-name-input" className="input" placeholder="  nome" disabled={inputState} onChange={(e)=> setname(e.target.value)} type="text" required></Input>
                 <Input data-test="user-image-input" className="input" placeholder="  foto" disabled={inputState}  onChange={(e)=> setfoto(e.target.value)} type="text" required></Input>
-                <Button data-test="siginup-btn" disabled={inputState}>Cadastrar</Button>
+                <Button data-test="signup-btn" disabled={inputState}>Cadastrar</Button>
                 <Link to={"/"}>
                     <P data-test="login-link">Já tem uma conta? Faça login!</P>
                 </Link>
