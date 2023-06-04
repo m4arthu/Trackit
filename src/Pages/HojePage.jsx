@@ -70,7 +70,7 @@ export const HojePage = () => {
       }
     }
 
-    return <HabitContainer confirmed={confirmed} key={habits.indexOf(habit)}>
+    return <HabitContainer seqeunce={habit.currentSequence} record={habit.highestSequence}  confirmed={confirmed} key={habits.indexOf(habit)}>
       <div data-test="today-habit-name">
         {habit.name}
         <button data-test="today-habit-check-btn" onClick={() => { toMarkHabit() }} className="confirm-box"><img src={Confirm} alt="" /></button>
@@ -95,22 +95,22 @@ export const HojePage = () => {
     })
   }
   return (
-    <>
+    < div>
       <Navbar />
       <Header>
         <h2 data-test="today">{weekdays[data.day()] + ","} {new Date().getDate() + "/" + data.month()} </h2>
-        {footerPercentage === 0.00 ? <P data-test="today-counter">Nenhum hábito concluído ainda</P> :
-          <P data-test="today-counter" color={"#8FC549"}><span>{footerPercentage + "%"}</span> dos hábitos concluídos</P>}
+        {footerPercentage === 0.00 ? <P >Nenhum hábito concluído ainda</P> :
+          <P color={"#8FC549"}><span data-test="today-counter" >{footerPercentage + "%"}</span> dos hábitos concluídos</P>}
       </Header>
       {habits.map((habit) => {
         return <HojeContainer data-test="today-habit-container">
-          <Habit habit={habit} />
+          <Habit  key={habit.id}  habit={habit} />
         </HojeContainer>
 
       })}
 
       <Footer percentage={footerPercentage} />
-    </>
+    </div>
   )
 }
 
@@ -142,7 +142,7 @@ div{
     font-size:13px;
     p{
       span{
-      color:${(props)=>props.confirmed ? "#8FC549" : "#666666"};
+      color:${(props)=>props.seqeunce === props.highestSequence ? "#8FC549" : "#666666"};
       }
     }
 }

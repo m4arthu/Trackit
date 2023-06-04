@@ -7,7 +7,7 @@ import vector3 from "../assets/Vector 3.svg"
 import { Link } from "react-router-dom"
 import { useContext, useState } from "react"
 import  {AuthContext}  from "../Contexts/auth"
-
+import BeatLoader from "react-spinners/BeatLoader"
 export function Logo() {
     return (
         <ImgContainer>
@@ -30,10 +30,11 @@ export default function LogginPage() {
     const [password,setPassword] = useState("")
     const {loggin} = useContext(AuthContext)
     const [inputState,setState] = useState(false)
+    const [loading,setLoading] = useState(false)
     function sendLoggin(e) {
         setState(true)
         e.preventDefault();
-        loggin(email,password,setState)
+        loggin(email,password,setState,setLoading)
     }
     
     return (
@@ -42,9 +43,9 @@ export default function LogginPage() {
             <LogginFormContainer onSubmit={sendLoggin}>
                 <Input data-test="email-input" className="input" disabled={inputState} placeholder="  email" onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
                 <Input data-test="password-input" className="input" disabled={inputState} placeholder="  senha" onChange={(e)=> setPassword(e.target.value)} type="password" required></Input>
-                <Button data-test="login-btn" disabled={inputState}>Entrar</Button>
+                <Button data-test="login-btn" disabled={inputState}>{loading? <BeatLoader/> :"Entrar"}</Button>
                 <Link to={"/cadastro"}>
-                    <P data-test="sginup-link">Não tem uma conta? Cadastre-se!</P>
+                    <P data-test="signup-link">Não tem uma conta? Cadastre-se!</P>
                 </Link>
             </LogginFormContainer>
         </LogginContainer>

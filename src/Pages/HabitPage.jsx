@@ -58,7 +58,7 @@ export default function HabitsPage() {
     const [displayState, setDisplayState] = useState("none")
     const [inputDisable, setInputDisable] = useState(false)
     const [habit, setHabit] = useState("")
-    const weekdays = [{ id: "0", value: "D" }, { id: "1", value: "S" }, { id: "2", value: "T" }, { id: "3", value: "Q" }, { id: "4", value: "Q" }, { id: "5", value: "S" }, { id: "6", value: "S" },{ id: "7", value: "D" }]
+    const weekdays = [{ id: "0", value: "D" }, { id: "1", value: "S" }, { id: "2", value: "T" }, { id: "3", value: "Q" }, { id: "4", value: "Q" }, { id: "5", value: "S" }, { id: "6", value: "S" }]
     var selectedDays = []
     useEffect(() => {
         const promisse = axios.get(url, {
@@ -167,7 +167,7 @@ export default function HabitsPage() {
             <Navbar />
             <Body>
                 <PostHabits setDisplayState={setDisplayState} />
-                <HabitsForm style={{ display: displayState }} onSubmit={sendHabit}>
+                <HabitsForm data-test="habit-create-container" style={{ display: displayState }} onSubmit={sendHabit}>
                     <input data-test="habit-name-input" disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
                     <div className="dayweek">
                         {weekdays.map((day) => {
@@ -191,7 +191,7 @@ export default function HabitsPage() {
             <Navbar />
             <Body>
                 <PostHabits setDisplayState={setDisplayState} />
-                <HabitsForm style={{ display: displayState }} onSubmit={sendHabit}>
+                <HabitsForm data-test="habit-create-container" style={{ display: displayState }} onSubmit={sendHabit}>
                     <input data-test="habit-name-input" disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
                     <div className="dayweek">
                         {weekdays.map((day) => {
