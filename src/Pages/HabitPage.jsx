@@ -5,6 +5,7 @@ import { AuthContext } from "../Contexts/auth"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import trash from "../assets/trash.svg"
+import { useRef } from "react"
 export function Navbar() {
     const { user } = useContext(AuthContext)
     return (
@@ -52,12 +53,13 @@ function PostHabits({ setDisplayState }) {
 
 
 export default function HabitsPage() {
+    var Null = ""
     const { user, footerPercentage,setFooterPercentage } = useContext(AuthContext)
     const url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const [habits, setHabits] = useState([])
     const [displayState, setDisplayState] = useState("none")
     const [inputDisable, setInputDisable] = useState(false)
-    const [habit, setHabit] = useState("")
+    const habit = useRef(null)
     const weekdays = [{ id: "0", value: "D" }, { id: "1", value: "S" }, { id: "2", value: "T" }, { id: "3", value: "Q" }, { id: "4", value: "Q" }, { id: "5", value: "S" }, { id: "6", value: "S" }]
     var selectedDays = []
     useEffect(() => {
@@ -111,7 +113,7 @@ export default function HabitsPage() {
         e.preventDefault()
        
         const data = {
-            name: habit,
+            name: habit.current.value,
             days: selectedDays
         }
         const promisse = axios.post(url, data, {
@@ -120,10 +122,10 @@ export default function HabitsPage() {
             }
         })
         promisse.then((response) => {
-            (response)
+            habit.current.value = ""
             setInputDisable(false)
-            setHabit("")
             setDisplayState("none")
+            console.log(response)
             selectedDays = []
             const promisse = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
                 headers: {
@@ -168,7 +170,7 @@ export default function HabitsPage() {
             <Body>
                 <PostHabits setDisplayState={setDisplayState} />
                 <HabitsForm data-test="habit-create-container" style={{ display: displayState }} onSubmit={sendHabit}>
-                    <input data-test="habit-name-input" disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
+                    <input data-test="habit-name-input" disabled={inputDisable} ref={habit} className="text" placeholder="  Nome do hábito" type="text" ></input>
                     <div className="dayweek">
                         {weekdays.map((day) => {
                             return <Button disabled={inputDisable} key={day.id} id={day.id} value={day.value} />
@@ -192,7 +194,7 @@ export default function HabitsPage() {
             <Body>
                 <PostHabits setDisplayState={setDisplayState} />
                 <HabitsForm data-test="habit-create-container" style={{ display: displayState }} onSubmit={sendHabit}>
-                    <input data-test="habit-name-input" disabled={inputDisable} onChange={(e) => setHabit(e.target.value)} className="text" placeholder="  Nome do hábito" type="text" ></input>
+                    <input data-test="habit-name-input" disabled={inputDisable} ref={habit} className="text" placeholder="  Nome do hábito" type="text" ></input>
                     <div className="dayweek">
                         {weekdays.map((day) => {
                             return <Button disabled={inputDisable} key={day.id} id={day.id} value={day.value} />
@@ -471,6 +473,8 @@ display:flex;
 justify-content:center;
 margin-top:40px;
 align-items:center;
+word-break:break-word;
+
 .header{
     display:flex;
     width:100%;
@@ -479,9 +483,8 @@ align-items:center;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-     margin-left: 10px;
-    margin-bottom:10px;
     justify-content:space-between;
+    background-color:#ffff;
     span{
         margin-right:20px;
     }
@@ -493,5 +496,7 @@ div{
     background: #FFFFFF;
     border-radius: 5px;
 }
-
+.container{
+    margin-top:0
+}
 `

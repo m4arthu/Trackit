@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { createContext } from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios"
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -48,8 +48,9 @@ export const AuthProvider = ({ children }) => {
         password: password
       })
     promisse.then(() => {
+      setUserState(true)
       setLoading(false)
-      navigate("/ ")
+      navigate("/hoje")
       console.log("usuario registrado")
     })
     promisse.catch((error) => {

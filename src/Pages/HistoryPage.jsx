@@ -4,7 +4,8 @@ import { AuthContext } from "../Contexts/auth";
 import { Header } from "./HojePage";
 
 export default function HistoryPage() {
-   const {footerPercentage} = useContext(AuthContext)
+   const {footerPercentage,setFooterPercentage} = useContext(AuthContext)
+   setFooterPercentage(footerPercentage)
     return (
         <>
             <Navbar />

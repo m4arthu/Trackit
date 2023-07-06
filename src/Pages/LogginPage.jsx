@@ -6,8 +6,10 @@ import vector2 from "../assets/Vector 2.svg"
 import vector3 from "../assets/Vector 3.svg"
 import { Link } from "react-router-dom"
 import { useContext, useState } from "react"
-import  {AuthContext}  from "../Contexts/auth"
+import { AuthContext } from "../Contexts/auth"
 import BeatLoader from "react-spinners/BeatLoader"
+import { GoogleLogin } from "@react-oauth/google"
+import jwt_decode from "jwt-decode"
 export function Logo() {
     return (
         <ImgContainer>
@@ -26,24 +28,33 @@ export function Logo() {
 }
 
 export default function LogginPage() {
-    const [email,setEmail] = useState("")
-    const [password,setPassword] = useState("")
-    const {loggin} = useContext(AuthContext)
-    const [inputState,setState] = useState(false)
-    const [loading,setLoading] = useState(false)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const { loggin,register } = useContext(AuthContext)
+    const [inputState, setState] = useState(false)
+    const [loading, setLoading] = useState(false)
     function sendLoggin(e) {
         setState(true)
         e.preventDefault();
-        loggin(email,password,setState,setLoading)
+        loggin(email, password, setState, setLoading)
     }
-    
+
     return (
         <LogginContainer>
             <Logo />
             <LogginFormContainer onSubmit={sendLoggin}>
-                <Input data-test="email-input" className="input" disabled={inputState} placeholder="  email" onChange={(e)=> setEmail(e.target.value)} type="text" required></Input>
-                <Input data-test="password-input" className="input" disabled={inputState} placeholder="  senha" onChange={(e)=> setPassword(e.target.value)} type="password" required></Input>
-                <Button data-test="login-btn" disabled={inputState}>{loading? <BeatLoader/> :"Entrar"}</Button>
+                <Input data-test="email-input" className="input" disabled={inputState} placeholder="  email" onChange={(e) => setEmail(e.target.value)} type="text" required></Input>
+                <Input data-test="password-input" className="input" disabled={inputState} placeholder="  senha" onChange={(e) => setPassword(e.target.value)} type="password" required></Input>
+                <Button data-test="login-btn" disabled={inputState}>{loading ? <BeatLoader /> : "Entrar"}</Button>
+                <GoogleLogin
+                    onSuccess={credentialResponse => {
+                        let credencial_decodificada = jwt_decode(credentialResponse.credential)
+                        loggin(credencial_decodificada.email,credencial_decodificada.name, setState, setLoading)
+                    }}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                />
                 <Link to={"/cadastro"}>
                     <P data-test="signup-link">Não tem uma conta? Cadastre-se!</P>
                 </Link>
